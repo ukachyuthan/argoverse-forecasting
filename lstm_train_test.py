@@ -156,6 +156,7 @@ class EncoderRNN(nn.Module):
 
         self.linear1 = nn.Linear(input_size, embedding_size)
         self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
+        self.gru1 = nn.GRUCell(embedding_size, hidden_size)
 
     def forward(self, x: torch.FloatTensor, hidden: Any) -> Any:
         """Run forward propagation.
@@ -168,7 +169,7 @@ class EncoderRNN(nn.Module):
 
         """
         embedded = F.relu(self.linear1(x))
-        hidden = self.lstm1(embedded, hidden)
+        hidden = self.gru1(embedded, hidden)
         return hidden
 
 
@@ -189,6 +190,7 @@ class DecoderRNN(nn.Module):
         self.linear1 = nn.Linear(output_size, embedding_size)
         self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
         self.linear2 = nn.Linear(hidden_size, output_size)
+        self.gru1 = nn.GRUCell(embedding_size, hidden_size)
 
     def forward(self, x, hidden):
         """Run forward propagation.
@@ -202,7 +204,7 @@ class DecoderRNN(nn.Module):
 
         """
         embedded = F.relu(self.linear1(x))
-        hidden = self.lstm1(embedded, hidden)
+        hidden = self.gru1(embedded, hidden)
         output = self.linear2(hidden[0])
         return output, hidden
 
