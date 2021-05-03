@@ -204,7 +204,8 @@ class ModelUtils:
             Initial hidden states
 
         """
-        return (
-            torch.zeros(batch_size, hidden_size).to(device),
-            torch.zeros(batch_size, hidden_size).to(device),
-        )
+        return torch.zeros(batch_size, hidden_size).to(device)
+#         return (
+#             torch.zeros(batch_size, hidden_size).to(device),
+#             torch.zeros(batch_size, hidden_size).to(device),
+#         )
