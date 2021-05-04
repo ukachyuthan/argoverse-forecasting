@@ -156,8 +156,8 @@ class EncoderRNN(nn.Module):
 
         self.linear1 = nn.Linear(input_size, embedding_size)
         self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
-        self.cnn = nn.Conv1d(8,8,3)
-        self.gru1 = nn.GRUCell(embedding_size, hidden_size)
+        self.cnn = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=3, padding=0)
+        self.gru1 = nn.GRUCell(6, hidden_size)
 
     def forward(self, x: torch.FloatTensor, hidden: Any) -> Any:
         """Run forward propagation.
@@ -170,7 +170,9 @@ class EncoderRNN(nn.Module):
 
         """
         embedded = F.relu(self.linear1(x))
+        embedded = embedded.unsqueeze(dim=1)
         embedded = self.cnn(embedded)
+        embedded = embedded.squeeze(dim=1)
         hidden = self.gru1(embedded, hidden)
         return hidden
 
