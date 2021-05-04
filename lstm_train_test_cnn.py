@@ -156,6 +156,7 @@ class EncoderRNN(nn.Module):
 
         self.linear1 = nn.Linear(input_size, embedding_size)
         self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
+        self.cnn = nn.Conv1d(8,8,3)
         self.gru1 = nn.GRUCell(embedding_size, hidden_size)
 
     def forward(self, x: torch.FloatTensor, hidden: Any) -> Any:
@@ -169,6 +170,7 @@ class EncoderRNN(nn.Module):
 
         """
         embedded = F.relu(self.linear1(x))
+        embedded = self.cnn(embedded)
         hidden = self.gru1(embedded, hidden)
         return hidden
 
