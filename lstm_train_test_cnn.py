@@ -208,7 +208,7 @@ class DecoderRNN(nn.Module):
 
         """
         embedded = F.relu(self.linear1(x))
-        hidden = self.gru1(embedded, hidden)
+        hidden = self.lstm1(embedded, hidden)
         output = self.linear2(hidden[0])
         return output, hidden
 
