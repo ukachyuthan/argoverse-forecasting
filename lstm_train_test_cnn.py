@@ -155,7 +155,7 @@ class EncoderRNN(nn.Module):
         self.hidden_size = hidden_size
 
         self.linear1 = nn.Linear(input_size, embedding_size)
-        self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
+        self.lstm1 = nn.LSTMCell(6, hidden_size)
         self.cnn = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=3, padding=0)
         self.gru1 = nn.GRUCell(6, hidden_size)
 
@@ -173,7 +173,7 @@ class EncoderRNN(nn.Module):
         embedded = embedded.unsqueeze(dim=1)
         embedded = self.cnn(embedded)
         embedded = embedded.squeeze(dim=1)
-        hidden = self.gru1(embedded, hidden)
+        hidden = self.lstm1(embedded, hidden)
         return hidden
 
 
@@ -209,7 +209,7 @@ class DecoderRNN(nn.Module):
         """
         embedded = F.relu(self.linear1(x))
         hidden = self.gru1(embedded, hidden)
-        output = self.linear2(hidden)
+        output = self.linear2(hidden[0])
         return output, hidden
 
 
