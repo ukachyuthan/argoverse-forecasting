@@ -168,7 +168,7 @@ class EncoderRNN(nn.Module):
             hidden: final hidden 
 
         """
-        embedded = F.relu(self.linear1(x))
+        embedded = self.linear1(x)
         hidden = self.gru1(embedded, hidden)
         return hidden
 
@@ -203,7 +203,7 @@ class DecoderRNN(nn.Module):
             hidden: final hidden state
 
         """
-        embedded = F.relu(self.linear1(x))
+        embedded = self.linear1(x)
         hidden = self.gru1(embedded, hidden)
         output = self.linear2(hidden)
         return output, hidden
@@ -269,6 +269,7 @@ def train(
         for ei in range(input_length):
             encoder_input = _input[:, ei, :]
             encoder_hidden = encoder(encoder_input, encoder_hidden)
+            print("Encoder Hidden Values : ", encoder_hidden)
 
         # Initialize decoder input with last coordinate in encoder
         decoder_input = encoder_input[:, :2]
@@ -282,6 +283,7 @@ def train(
         for di in range(rollout_len):
             decoder_output, decoder_hidden = decoder(decoder_input,
                                                      decoder_hidden)
+            print("Decoder Output : ", decoder_output)
             decoder_outputs[:, di, :] = decoder_output
 
             # Update loss
