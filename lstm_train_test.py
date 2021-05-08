@@ -297,7 +297,7 @@ def train(
 
         # Backpropagate
         loss.backward()
-        for p in list(filter(lambda p: p.grad is not None, net.parameters())):
+        for p in list(filter(lambda p: p.grad is not None, encoder.parameters())):
             print(p.grad.data.norm(2).item())
         encoder_optimizer.step()
         decoder_optimizer.step()
