@@ -155,7 +155,9 @@ class EncoderRNN(nn.Module):
         self.hidden_size = hidden_size
 
         self.linear1 = nn.Linear(input_size, embedding_size)
-        self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
+        self.linear2 = nn.Linear(embedding_size, 16)
+        self.linear3 = nn.Linear(16, 32)
+        self.lstm1 = nn.LSTMCell(32, hidden_size)
         self.gru1 = nn.GRUCell(embedding_size, hidden_size)
 
     def forward(self, x: torch.FloatTensor, hidden: Any) -> Any:
@@ -168,8 +170,8 @@ class EncoderRNN(nn.Module):
             hidden: final hidden 
 
         """
-        embedded = F.relu(self.linear1(x))
-        hidden = self.gru1(embedded, hidden)
+        embedded = F.relu(self.linear3(F.relu(self.linear2(F.relu(self.linear1(x))))))
+        hidden = self.lstm1(embedded, hidden)
         return hidden
 
 
@@ -188,8 +190,10 @@ class DecoderRNN(nn.Module):
         self.hidden_size = hidden_size
 
         self.linear1 = nn.Linear(output_size, embedding_size)
-        self.lstm1 = nn.LSTMCell(embedding_size, hidden_size)
-        self.linear2 = nn.Linear(hidden_size, output_size)
+        self.linear2 = nn.Linear(embedding_size, 16)
+        self.linear3 = nn.Linear(16, 32)
+        self.lstm1 = nn.LSTMCell(32, hidden_size)
+        self.linear4 = nn.Linear(hidden_size, output_size)
         self.gru1 = nn.GRUCell(embedding_size, hidden_size)
 
     def forward(self, x, hidden):
@@ -203,9 +207,9 @@ class DecoderRNN(nn.Module):
             hidden: final hidden state
 
         """
-        embedded = F.relu(self.linear1(x))
-        hidden = self.gru1(embedded, hidden)
-        output = self.linear2(hidden)
+        embedded = F.relu(self.linear3(F.relu(self.linear2(F.relu(self.linear1(x))))))
+        hidden = self.lstm1(embedded, hidden)
+        output = self.linear4(hidden)
         return output, hidden
 
 
@@ -732,6 +736,7 @@ def main():
     criterion = nn.MSELoss()
     encoder = EncoderRNN(
         input_size=len(baseline_utils.BASELINE_INPUT_FEATURES[baseline_key]))
+    # encoder.load_state_dict(torch.load(PATH)) 
     decoder = DecoderRNN(output_size=2)
     if use_cuda:
         encoder = nn.DataParallel(encoder)

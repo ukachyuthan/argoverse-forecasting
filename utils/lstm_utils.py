@@ -154,14 +154,18 @@ class ModelUtils:
             epoch = checkpoint["epoch"]
             best_loss = checkpoint["best_loss"]
             rollout_len = checkpoint["rollout_len"]
-            if use_cuda:
-                encoder.module.load_state_dict(
-                    checkpoint["encoder_state_dict"])
-                decoder.module.load_state_dict(
-                    checkpoint["decoder_state_dict"])
-            else:
-                encoder.load_state_dict(checkpoint["encoder_state_dict"])
-                decoder.load_state_dict(checkpoint["decoder_state_dict"])
+            # if use_cuda:
+            #     encoder.module.load_state_dict(
+            #         checkpoint["encoder_state_dict"])
+            #     decoder.module.load_state_dict(
+            #         checkpoint["decoder_state_dict"])
+            # else:
+                # encoder.load_state_dict(checkpoint["encoder_state_dict"])
+                # decoder.load_state_dict(checkpoint["decoder_state_dict"])
+            
+            encoder.load_state_dict(checkpoint["encoder_state_dict"])
+            decoder.load_state_dict(checkpoint["decoder_state_dict"])
+
             encoder_optimizer.load_state_dict(checkpoint["encoder_optimizer"])
             decoder_optimizer.load_state_dict(checkpoint["decoder_optimizer"])
             print(
