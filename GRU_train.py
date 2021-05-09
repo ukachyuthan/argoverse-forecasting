@@ -125,16 +125,18 @@ def parse_arguments() -> Any:
 
 
 class EncoderRNN(nn.Module):
-    def __init__(self, ins = 2, es = 8, hs = 16):
+    def __init__(self, ins=2, es=8, hs=16):
         super(EncoderRNN, self).__init__()
         self.hs = hs
         self.linear1 = nn.Linear(ins, es)
         self.lstm1 = nn.LSTMCell(es, hs)
         self.gru1 = nn.GRUCell(es, hs)
 
+
     def forward(self, x: torch.FloatTensor, hidden: Any) -> Any:
+
         embedded = F.relu(self.linear1(x))
-        hidden = self.lstm1(embedded, hidden)
+        hidden = self.gru1(embedded, hidden)
         return hidden
 
 
@@ -142,16 +144,16 @@ class DecoderRNN(nn.Module):
     def __init__(self, ins=8, hs=16, ops=2):
         super(DecoderRNN, self).__init__()
         self.hs = hs
-        self.linear1 = nn.Linear(ops, ins)
-        self.linear2 = nn.Linear(hs, ops)
+
+        self.linear1 = nn.Linear(ops, es)
         self.lstm1 = nn.LSTMCell(es, hs)
-        self.linear4 = nn.Linear(hs, ops)
-        self.gru1 = nn.GRUCell(ins, hs)
+        self.linear2 = nn.Linear(hs, ops)
+        self.gru1 = nn.GRUCell(es, hs)
 
     def forward(self, x, hidden):
-        embedded = F.relu(self.linear1(x))
+        embedded = F.relu(self.linear3(F.relu(self.linear2(F.relu(self.linear1(x))))))
         hidden = self.lstm1(embedded, hidden)
-        output = self.linear2(hidden[0])
+        output = self.linear4(hidden)
         return output, hidden
 
 
