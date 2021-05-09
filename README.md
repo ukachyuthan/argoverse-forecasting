@@ -168,12 +168,3 @@ Some sample results are shown below
 
 
 ---
-
-## Contributing
-Contributions are always welcome! Please be aware of our [contribution guidelines for this project](CONTRIBUTING.md).
-
----
-
-## License
-
-The repository is released under **BSD-3-Clause-Clear License**. Please be aware of the constraints. See **[LICENSE](./LICENSE)**
