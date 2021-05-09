@@ -1,96 +1,13 @@
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 
+For installation of ARGOVERSE API: https://github.com/argoai/argoverse-api
 
-# Argoverse Motion Forecasting Baselines
-
-> Official GitHub repository for [Argoverse](https://www.argoverse.org) Motion Forecasting Baselines. This repository is released under **BSD-3-Clause-Clear License**.
-
----
-
-## Table of Contents
-
-> If you have any questions, feel free to open a [GitHub issue](https://github.com/jagjeet-singh/argoverse-forecasting/issues) describing the problem.
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## Installation
-
-Requires Linux, git, and Python 3.6+
-
-### 1) Setup Argoverse API
-
-Follow instructions on Argoverse [repository](https://github.com/argoai/argoverse-api.git)
-to setup Argoverse API. Make sure the map files are downloaded to the root directory of argoverse repo.
-
-### 2) Download Argoverse-Forecasting
-
-Argoverse provides both the full dataset and the sample version of the dataset for testing purposes. Head to [their website](https://www.argoverse.org/data.html#download-link) to see the download option.
-
-### 3) Install dependencies
-Install the packages mentioned in `requirements.txt`
-```
-pip install -r requirements.txt
-```
----
-
-## Usage
-Running Motion Forecasting baselines has the below 3 components. The runtimes observed on a `p2.8xlarge` instance (8 NVIDIA K80 GPUs, 32 vCPUs and 488 GiB RAM) are also provided for each part:
-
-### 1) Feature computation (`compute_features.py`)
-
-To begin with, we need to compute social and map features for train, val and test set. This is the most computationally expensive part.
-
-Run the following script to compute features for each of train/val/test.
-```
-$ python compute_features.py --data_dir <path/to/data> --feature_dir <directory/where/features/to/be/saved> --mode <train/val/test> --obs_len 20 --pred_len 30
-```
-| Component | Mode | Runtime |
-| --- | --- | --- |
-| Feature computation (`compute_features.py`) | train | 38 hrs |
-| Feature computation (`compute_features.py`) | val | 7 hrs |
-| Feature computation (`compute_features.py`) | test | 14 hrs |
+For the base code referred to in this implementation: https://github.com/jagjeet-singh/argoverse-forecasting
 
 
-*Note*: If you are not changing anything in the feature computation step, you can also download the precomputed features from [this](https://www.google.com/url?q=https://drive.google.com/drive/folders/1hHbpdlsgQL_XOxrUK0OuWGX0BxiGpxKY?usp%3Dsharing&sa=D&source=hangouts&ust=1572986070601000&usg=AFQjCNFZPWA9Z17Oi1bf3HAmMwKhRgRM_Q) link
+#### Train Models:
 
-### 2) Run forecasting baselines (`nn_train_test.py`, `lstm_train_test.py`)
-
-Once the features have been computed, we can run any of the below baselines. 
-
-#### Constant Velocity:
-
-```
-$ python const_vel_train_test.py --test_features <path/to/test/features> --obs_len 20 --pred_len 30 --traj_save_path <pkl/file/for/forecasted/trajectories>
-```
-
-| Component | Mode | Runtime |
-| --- | --- | --- |
-| Constant Velocity (`const_vel_train_test.py`) | train+test | less than 1 min |
-
-
-#### K-Nearest Neighbors:
-
-Using Map prior:
-```
-$ python nn_train_test.py --train_features <path/to/train/features> --val_features <path/to/val/features> --test_features <path/to/test/features> --use_map --use_delta --obs_len 20 --pred_len 30 --n_neigh 3 --model_path <pkl/file/path/for/model> --traj_save_path <pkl/file/for/forecasted/trajectories>
-```
-
-Neither map nor social:
-```
-$ python nn_train_test.py --train_features <path/to/train/features> --val_features <path/to/val/features> --test_features <path/to/test/features> --normalize --use_delta --obs_len 20 --pred_len 30 --n_neigh 9 --model_path <pkl/file/path/for/model> --traj_save_path <pkl/file/for/forecasted/trajectories>
-```
-
-| Component | Mode | Baseline | Runtime |
-| --- | --- | --- | --- |
-| K-Nearest Neighbors (`nn_train_test.py`) | train+test | Map prior | 3.2 hrs |
-| K-Nearest Neighbors (`nn_train_test.py`) | train+test | Niether map nor social | 0.5 hrs | 
-
-#### LSTM:
+The options available are lstm_train, GRU_train, rnn_train
 
 Using Map prior:
 ```
