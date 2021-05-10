@@ -10,6 +10,8 @@ The papers referred to for this implementation are: https://arxiv.org/pdf/1911.0
 
 Our best performing model ranked 125th in the Argoverse Public leaderboard.
 
+![](leaderboard.png)
+
 #### Train Models:
 
 The options available are lstm_train, GRU_train, rnn_train and GRU_linear_train.
