@@ -54,8 +54,8 @@ Some sample results are shown below
 
 | | |
 |:-------------------------:|:-------------------------:|
-| ![](images/image (10).png) | ![](images/image (9).png) |
-| ![](images/image (8).png) | ![](images/image (7).png) |
+| ![](images/image1.png) | ![](images/image2.png) |
+| ![](images/image3.png) | ![](images/image4.png) |
 
 
 ---
