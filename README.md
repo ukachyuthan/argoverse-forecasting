@@ -54,8 +54,8 @@ Some sample results are shown below
 
 | | |
 |:-------------------------:|:-------------------------:|
-| ![](images/lane_change.png) | ![](images/map_for_reference_1.png) |
-| ![](images/right_straight.png) | ![](images/map_for_reference_2.png) |
+| ![](images/image (10).png) | ![](images/image (9).png) |
+| ![](images/image (8).png) | ![](images/image (7).png) |
 
 
 ---
