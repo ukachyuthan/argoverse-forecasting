@@ -6,6 +6,9 @@ For the base code referred to in this implementation: https://github.com/jagjeet
 
 For the pre-computed features: https://drive.google.com/drive/folders/1hHbpdlsgQL_XOxrUK0OuWGX0BxiGpxKY
 
+The papers referred to for this implementation are: https://arxiv.org/pdf/1911.02620.pdf and https://arxiv.org/pdf/1802.06338.pdf
+
+Our best performing model ranked 125th in the Argoverse Public leaderboard.
 
 #### Train Models:
 
